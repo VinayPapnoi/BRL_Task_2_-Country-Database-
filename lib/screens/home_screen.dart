@@ -41,36 +41,64 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Countries Database')),
+      appBar: AppBar(
+        title: const Text('Countries Database', style: TextStyle(fontSize: 25)),
+      ),
       body: Padding(
         padding: const EdgeInsets.all(16),
-        child: Column(
-          children: [
-            TextField(
-              controller: _controller,
-              decoration: const InputDecoration(
-                labelText: 'Enter country name',
-                border: OutlineInputBorder(),
+        child: Center(
+          child: Column(
+            children: [
+              TextField(
+                controller: _controller,
+                style: const TextStyle(fontSize: 25),
+                decoration: const InputDecoration(
+                  labelText: 'Enter country name',
+                  labelStyle: TextStyle(fontSize: 20),
+                  border: OutlineInputBorder(),
+                ),
               ),
-            ),
-            const SizedBox(height: 10),
-            ElevatedButton(
-              onPressed: _searchCountry,
-              child: const Text('Search'),
-            ),
-            const SizedBox(height: 20),
-            if (_error.isNotEmpty)
-              Text(_error, style: const TextStyle(color: Colors.red)),
-            if (_country != null) ...[
-              if (_country!.flagUrl.isNotEmpty)
-                Image.network(_country!.flagUrl, height: 100),
               const SizedBox(height: 10),
-              Text('Name: ${_country!.name}'),
-              Text('Capital: ${_country!.capital}'),
-              Text('Region: ${_country!.region}'),
-              Text('Population: ${_country!.population}'),
-            ]
-          ],
+              ElevatedButton(
+                onPressed: _searchCountry,
+                style: ElevatedButton.styleFrom(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 40,
+                    vertical: 10,
+                  ),
+                ),
+                child: const Text(style: TextStyle(fontSize: 20), 'Search'),
+              ),
+              const SizedBox(height: 20),
+              if (_error.isNotEmpty)
+                Text(
+                  _error,
+                  style: const TextStyle(
+                    fontWeight: FontWeight.bold,
+                    color: Color.fromARGB(255, 255, 17, 0),
+                    fontSize: 40,
+                  ),
+                ),
+              if (_country != null) ...[
+                if (_country!.flagUrl.isNotEmpty)
+                  Image.network(_country!.flagUrl, height: 150),
+                const SizedBox(height: 10),
+                Text(style: TextStyle(fontSize: 22), 'Name: ${_country!.name}'),
+                Text(
+                  style: TextStyle(fontSize: 22),
+                  'Capital: ${_country!.capital}',
+                ),
+                Text(
+                  style: TextStyle(fontSize: 22),
+                  'Region: ${_country!.region}',
+                ),
+                Text(
+                  style: TextStyle(fontSize: 22),
+                  'Population: ${_country!.population}',
+                ),
+              ],
+            ],
+          ),
         ),
       ),
     );
