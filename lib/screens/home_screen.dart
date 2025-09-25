@@ -90,7 +90,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 ),
                 Text(
                   style: TextStyle(fontSize: 22),
-                  'Region: ${_country!.region}',
+                  'Continent: ${_country!.region}',
                 ),
                 Text(
                   style: TextStyle(fontSize: 22),

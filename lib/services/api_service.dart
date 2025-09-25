@@ -13,6 +13,17 @@ class ApiService {
         return Country.fromJson(data[0]);
       }
     }
-    return null; // return null if not found or error
+    return null; 
+  }
+  
+  static Future<List<Country>> fetchCountrySuggestions(String query) async {
+    final url = Uri.parse('https://restcountries.com/v3.1/name/$query');
+    final response = await http.get(url);
+
+    if (response.statusCode == 200) {
+      final List data = jsonDecode(response.body);
+      return data.map((json) => Country.fromJson(json)).toList();
+    }
+    return [];
   }
 }
