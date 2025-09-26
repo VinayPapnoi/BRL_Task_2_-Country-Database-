@@ -32,12 +32,14 @@ dependencies:
   flutter:
     sdk: flutter
   http: ^1.1.0
-  flutter_typeahead: ^4.1.0
+  # flutter_typeahead: ^4.1.1
+  flutter_keyboard_visibility: ^5.4.1
 
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.8
+  flutter_typeahead: ^5.0.1
 
 dev_dependencies:
   flutter_test:
