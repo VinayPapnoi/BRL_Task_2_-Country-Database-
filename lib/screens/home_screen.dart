@@ -48,8 +48,11 @@ class _HomeScreenState extends State<HomeScreen> {
       return;
     }
     final results = await ApiService.fetchCountrySuggestions(query);
+    final filtered = results
+    .where((country) => country.name.toLowerCase().startsWith(query.toLowerCase()))
+    .toList();
     setState(() {
-      _suggestions = results;
+      _suggestions = filtered;
     });
   }
 
