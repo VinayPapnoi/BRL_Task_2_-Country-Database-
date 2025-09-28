@@ -16,7 +16,9 @@ class Country {
   factory Country.fromJson(Map<String, dynamic> json) {
     return Country(
       name: json['name']['common'] ?? 'Unknown',
-      capital: json['capital'] != null && json['capital'].isNotEmpty ? json['capital'][0] : 'Unknown',
+      capital: json['capital'] != null && json['capital'].isNotEmpty
+          ? json['capital'][0]
+          : 'Unknown',
       region: json['region'] ?? 'Unknown',
       population: json['population'] ?? 0,
       flagUrl: json['flags']['png'] ?? '',
