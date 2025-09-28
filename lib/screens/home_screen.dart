@@ -49,8 +49,11 @@ class _HomeScreenState extends State<HomeScreen> {
     }
     final results = await ApiService.fetchCountrySuggestions(query);
     final filtered = results
-    .where((country) => country.name.toLowerCase().startsWith(query.toLowerCase()))
-    .toList();
+        .where(
+          (country) =>
+              country.name.toLowerCase().startsWith(query.toLowerCase()),
+        )
+        .toList();
     setState(() {
       _suggestions = filtered;
     });
@@ -87,22 +90,25 @@ class _HomeScreenState extends State<HomeScreen> {
                     border: Border.all(color: Colors.grey.shade400),
                     borderRadius: BorderRadius.circular(8),
                   ),
-                  child: Column(
-                    children: _suggestions.map((country) {
-                      return ListTile(
-                        title: Text(
-                          country.name,
-                          style: const TextStyle(fontSize: 18),
-                        ),
-                        onTap: () {
-                          _controller.text = country.name;
-                          _searchCountry();
-                        },
-                      );
-                    }).toList(),
+                  child: SizedBox(
+                    height: 200,
+                    child: ListView(
+                      shrinkWrap: true,
+                      children: _suggestions.map((country) {
+                        return ListTile(
+                          title: Text(
+                            country.name,
+                            style: const TextStyle(fontSize: 18),
+                          ),
+                          onTap: () {
+                            _controller.text = country.name;
+                            _searchCountry();
+                          },
+                        );
+                      }).toList(),
+                    ),
                   ),
                 ),
-
               const SizedBox(height: 10),
               ElevatedButton(
                 onPressed: _searchCountry,
