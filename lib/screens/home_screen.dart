@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_typeahead/flutter_typeahead.dart';
 import 'package:brl_task_2/models/country_model.dart';
 import 'package:brl_task_2/services/api_service.dart';
 
@@ -14,6 +13,7 @@ class _HomeScreenState extends State<HomeScreen> {
   final TextEditingController _controller = TextEditingController();
   Country? _country;
   String _error = '';
+  List<Country> _suggestions = [];
 
   void _searchCountry(String name) async {
     if (name.isEmpty) {
@@ -24,6 +24,7 @@ class _HomeScreenState extends State<HomeScreen> {
     setState(() {
       _error = '';
       _country = null;
+      _suggestions = [];
     });
 
     Country? country = await ApiService.fetchCountry(name);
@@ -34,6 +35,19 @@ class _HomeScreenState extends State<HomeScreen> {
       } else {
         _error = 'Country not found';
       }
+    });
+  }
+
+  void _getSuggestions(String query) async {
+    if (query.isEmpty) {
+      setState(() {
+        _suggestions = [];
+      });
+      return;
+    }
+    final results = await ApiService.fetchCountrySuggestions(query);
+    setState(() {
+      _suggestions = results;
     });
   }
 
@@ -50,6 +64,7 @@ class _HomeScreenState extends State<HomeScreen> {
             crossAxisAlignment:
                 CrossAxisAlignment.stretch, // stretch to full width
             children: [
+<<<<<<< HEAD
               // Search bar at the top
               TypeAheadField<Country>(
                 textFieldConfiguration: TextFieldConfiguration(
@@ -59,6 +74,16 @@ class _HomeScreenState extends State<HomeScreen> {
                     border: OutlineInputBorder(),
                   ),
                   style: const TextStyle(fontSize: 20),
+=======
+              TextField(
+                controller: _controller,
+                style: const TextStyle(fontSize: 25),
+                onChanged: _getSuggestions,
+                decoration: const InputDecoration(
+                  labelText: 'Enter country name',
+                  labelStyle: TextStyle(fontSize: 20),
+                  border: OutlineInputBorder(),
+>>>>>>> fix-autocomplete
                 ),
                 suggestionsCallback: (pattern) async {
                   if (pattern.isEmpty) return [];
@@ -81,7 +106,37 @@ class _HomeScreenState extends State<HomeScreen> {
                   });
                 },
               ),
+<<<<<<< HEAD
               const SizedBox(height: 20),
+=======
+              if (_suggestions.isNotEmpty)
+                Container(
+                  //neeche waali line recheck karni hai ek baar
+                  margin: const EdgeInsets.all(5),
+                  padding: const EdgeInsets.all(5),
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    border: Border.all(color: Colors.grey.shade400),
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                  child: Column(
+                    children: _suggestions.map((country) {
+                      return ListTile(
+                        title: Text(
+                          country.name,
+                          style: const TextStyle(fontSize: 18),
+                        ),
+                        onTap: () {
+                          _controller.text = country.name;
+                          _searchCountry();
+                        },
+                      );
+                    }).toList(),
+                  ),
+                ),
+
+              const SizedBox(height: 10),
+>>>>>>> fix-autocomplete
               ElevatedButton(
                 onPressed: () => _searchCountry(_controller.text.trim()),
                 style: ElevatedButton.styleFrom(
