@@ -57,6 +57,7 @@ class _HomeScreenState extends State<HomeScreen> {
               country.name.toLowerCase().startsWith(query.toLowerCase()),
         )
         .toList();
+
     setState(() {
       _suggestions = filtered.isEmpty ? [] : filtered;
     });
@@ -125,7 +126,7 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
               const SizedBox(height: 20),
               if (_isLoading)
-                const CircularProgressIndicator(),
+                Image.asset('assets/loading.gif', width: 300, height: 300),
               if (_error.isNotEmpty)
                 Text(
                   _error,
