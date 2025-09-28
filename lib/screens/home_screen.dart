@@ -14,6 +14,7 @@ class _HomeScreenState extends State<HomeScreen> {
   Country? _country;
   String _error = '';
   List<Country> _suggestions = [];
+  bool _isLoading = false;
 
   void _searchCountry() async {
     String name = _controller.text.trim();
@@ -27,11 +28,13 @@ class _HomeScreenState extends State<HomeScreen> {
       _error = '';
       _country = null;
       _suggestions = [];
+      _isLoading = true;
     });
 
     Country? country = await ApiService.fetchCountry(name);
 
     setState(() {
+      _isLoading = false;
       if (country != null) {
         _country = country;
       } else {
@@ -55,7 +58,7 @@ class _HomeScreenState extends State<HomeScreen> {
         )
         .toList();
     setState(() {
-      _suggestions = filtered;
+      _suggestions = filtered.isEmpty ? [] : filtered;
     });
   }
 
@@ -121,6 +124,8 @@ class _HomeScreenState extends State<HomeScreen> {
                 child: const Text(style: TextStyle(fontSize: 20), 'Search'),
               ),
               const SizedBox(height: 20),
+              if (_isLoading)
+                const CircularProgressIndicator(),
               if (_error.isNotEmpty)
                 Text(
                   _error,
