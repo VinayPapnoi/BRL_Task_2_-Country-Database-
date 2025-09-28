@@ -13,6 +13,7 @@ class _HomeScreenState extends State<HomeScreen> {
   final TextEditingController _controller = TextEditingController();
   Country? _country;
   String _error = '';
+  List<Country> _suggestions = [];
 
   void _searchCountry() async {
     String name = _controller.text.trim();
@@ -25,6 +26,7 @@ class _HomeScreenState extends State<HomeScreen> {
     setState(() {
       _error = '';
       _country = null;
+      _suggestions = [];
     });
 
     Country? country = await ApiService.fetchCountry(name);
@@ -35,6 +37,19 @@ class _HomeScreenState extends State<HomeScreen> {
       } else {
         _error = 'Country not found';
       }
+    });
+  }
+
+  void _getSuggestions(String query) async {
+    if (query.isEmpty) {
+      setState(() {
+        _suggestions = [];
+      });
+      return;
+    }
+    final results = await ApiService.fetchCountrySuggestions(query);
+    setState(() {
+      _suggestions = results;
     });
   }
 
@@ -52,12 +67,39 @@ class _HomeScreenState extends State<HomeScreen> {
               TextField(
                 controller: _controller,
                 style: const TextStyle(fontSize: 25),
+                onChanged: _getSuggestions,
                 decoration: const InputDecoration(
                   labelText: 'Enter country name',
                   labelStyle: TextStyle(fontSize: 20),
                   border: OutlineInputBorder(),
                 ),
               ),
+              if (_suggestions.isNotEmpty)
+                Container(
+                  //neeche waali line recheck karni hai ek baar
+                  margin: const EdgeInsets.all(5),
+                  padding: const EdgeInsets.all(5),
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    border: Border.all(color: Colors.grey.shade400),
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                  child: Column(
+                    children: _suggestions.map((country) {
+                      return ListTile(
+                        title: Text(
+                          country.name,
+                          style: const TextStyle(fontSize: 18),
+                        ),
+                        onTap: () {
+                          _controller.text = country.name;
+                          _searchCountry();
+                        },
+                      );
+                    }).toList(),
+                  ),
+                ),
+
               const SizedBox(height: 10),
               ElevatedButton(
                 onPressed: _searchCountry,

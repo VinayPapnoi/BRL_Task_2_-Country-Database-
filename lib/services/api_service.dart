@@ -17,6 +17,7 @@ class ApiService {
   }
   
   static Future<List<Country>> fetchCountrySuggestions(String query) async {
+    if(query.isEmpty) return [];
     final url = Uri.parse('https://restcountries.com/v3.1/name/$query');
     final response = await http.get(url);
 
