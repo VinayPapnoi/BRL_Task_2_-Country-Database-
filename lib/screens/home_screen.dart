@@ -15,6 +15,7 @@ class _HomeScreenState extends State<HomeScreen> {
   String _error = '';
   List<Country> _suggestions = [];
   bool _isLoading = false;
+  bool _pressed = false;
 
   void _searchCountry() async {
     String name = _controller.text.trim();
@@ -114,15 +115,25 @@ class _HomeScreenState extends State<HomeScreen> {
                   ),
                 ),
               const SizedBox(height: 10),
-              ElevatedButton(
-                onPressed: _searchCountry,
-                style: ElevatedButton.styleFrom(
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 40,
-                    vertical: 10,
+              AnimatedContainer(
+                duration: const Duration(milliseconds: 300),
+                width: _pressed ? 220 : 180,
+                height: 55,
+                child: ElevatedButton(
+                  onPressed: () {
+                    setState(() {
+                      _pressed = !_pressed;
+                    });
+                    _searchCountry();
+                  },
+                  style: ElevatedButton.styleFrom(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 40,
+                      vertical: 10,
+                    ),
                   ),
+                  child: const Text(style: TextStyle(fontSize: 20), 'Search'),
                 ),
-                child: const Text(style: TextStyle(fontSize: 20), 'Search'),
               ),
               const SizedBox(height: 20),
               if (_isLoading)
