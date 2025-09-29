@@ -122,7 +122,15 @@ class _HomeScreenState extends State<HomeScreen> {
                 child: ElevatedButton(
                   onPressed: () {
                     setState(() {
-                      _pressed = !_pressed;
+                      _pressed = true;
+                    });
+
+                    Future.delayed(const Duration(milliseconds: 300), () {
+                      if (mounted) {
+                        setState(() {
+                          _pressed = false;
+                        });
+                      }
                     });
                     _searchCountry();
                   },
