@@ -9,6 +9,7 @@ import 'screens/login_screen.dart';
 import 'screens/signup_email_password_screen.dart';
 import 'screens/login_email_password_screen.dart';
 import 'services/firebase_auth_methods.dart';
+import 'screens/VerifyEmailScreen.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -54,7 +55,13 @@ class AuthWrapper extends StatelessWidget {
     final firebaseUser = context.watch<User?>();
 
     if (firebaseUser != null) {
-      return const HomeScreen();
+      if (firebaseUser.emailVerified) {
+        // Only verified users can enter HomeScreen
+        return const HomeScreen();
+      } else {
+        // Show a screen telling user to verify their email
+        return const VerifyEmailScreen();
+      }
     } else {
       return const LoginScreen();
     }
