@@ -9,10 +9,13 @@ environment:
 
 dependencies:
   cupertino_icons: ^1.0.8
+  firebase_auth: ^6.1.0
   firebase_core: ^4.1.1
   flutter:
     sdk: flutter
+  google_sign_in: ^6.2.1
   http: ^1.1.0
+  provider: ^6.1.5+1
 
 dev_dependencies:
   flutter_lints: ^5.0.0
@@ -23,3 +26,5 @@ flutter:
   uses-material-design: true
   assets:
     - assets/loading.gif
+    - assets/login.png
+    - assets/register.png
