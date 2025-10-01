@@ -62,7 +62,7 @@ class FirebaseAuthMethods {
       } else {
         final GoogleSignIn googleSignIn = GoogleSignIn();
         final GoogleSignInAccount? googleUser = await googleSignIn.signIn();
-        if (googleUser == null) return; // user cancelled
+        if (googleUser == null) return; 
 
         final GoogleSignInAuthentication googleAuth =
             await googleUser.authentication;
@@ -76,7 +76,7 @@ class FirebaseAuthMethods {
         } else {
           showSnackBar(context, "Google sign-in failed. Tokens are null.");
         }
-      } // <-- This closing bracket was missing
+      } 
     } on FirebaseAuthException catch (e) {
       showSnackBar(context, e.message!);
     }
