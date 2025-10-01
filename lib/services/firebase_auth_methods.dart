@@ -61,8 +61,11 @@ class FirebaseAuthMethods {
         await _auth.signInWithPopup(googleProvider);
       } else {
         final GoogleSignIn googleSignIn = GoogleSignIn();
+        // Disconnect previous session if any, to force fresh sign-in
+        await googleSignIn.signOut();
+
         final GoogleSignInAccount? googleUser = await googleSignIn.signIn();
-        if (googleUser == null) return; 
+        if (googleUser == null) return; // user cancelled
 
         final GoogleSignInAuthentication googleAuth =
             await googleUser.authentication;
@@ -76,7 +79,7 @@ class FirebaseAuthMethods {
         } else {
           showSnackBar(context, "Google sign-in failed. Tokens are null.");
         }
-      } 
+      }
     } on FirebaseAuthException catch (e) {
       showSnackBar(context, e.message!);
     }
