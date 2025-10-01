@@ -105,15 +105,25 @@ class _HomeScreenState extends State<HomeScreen> {
                           child: ListView(
                             shrinkWrap: true,
                             children: _suggestions.map((country) {
-                              return ListTile(
-                                title: Text(
-                                  country.name,
-                                  style: const TextStyle(fontSize: 18),
+                              return Material(
+                                color:
+                                    Colors.transparent, // keeps background same
+                                child: InkWell(
+                                  borderRadius: BorderRadius.circular(
+                                    8,
+                                  ), // optional for rounded ripple
+                                  onTap: () {
+                                    _controller.text = country.name;
+                                    _searchCountry();
+                                  },
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(8.0),
+                                    child: Text(
+                                      country.name,
+                                      style: const TextStyle(fontSize: 18),
+                                    ),
+                                  ),
                                 ),
-                                onTap: () {
-                                  _controller.text = country.name;
-                                  _searchCountry();
-                                },
                               );
                             }).toList(),
                           ),
