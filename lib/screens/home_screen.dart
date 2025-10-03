@@ -22,6 +22,7 @@ class _HomeScreenState extends State<HomeScreen> {
   bool _pressed = false;
 
   void _searchCountry() async {
+    FocusScope.of(context).unfocus();
     String name = _controller.text.trim();
 
     if (name.isEmpty) {
@@ -66,13 +67,6 @@ class _HomeScreenState extends State<HomeScreen> {
     setState(() {
       _suggestions = filtered.isEmpty ? [] : filtered;
     });
-  }
-
-  Future<void> _logout() async {
-    await FirebaseAuth.instance.signOut();
-    if (mounted) {
-      Navigator.of(context).pushReplacementNamed('/login');
-    }
   }
 
   @override
@@ -159,6 +153,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                     child: InkWell(
                                       borderRadius: BorderRadius.circular(8),
                                       onTap: () {
+                                        FocusScope.of(context).unfocus();
                                         _controller.text = country.name;
                                         _searchCountry();
                                       },
@@ -255,8 +250,8 @@ class _HomeScreenState extends State<HomeScreen> {
                                             ImageChunkEvent? loadingProgress,
                                           ) {
                                             if (loadingProgress == null)
-                                              return child; // fully loaded
-                                            // Show a centered loading GIF while loading
+                                              return child;
+
                                             return Center(
                                               child: SizedBox(
                                                 width: 60,
