@@ -144,7 +144,8 @@ class _HomeScreenState extends State<HomeScreen> {
                             margin: const EdgeInsets.all(5),
                             padding: const EdgeInsets.all(5),
                             decoration: BoxDecoration(
-                              color: Colors.white.withOpacity(0.8),
+                              //color: Colors.white.withOpacity(0.8),
+                              color: Color.fromRGBO(255, 255, 255, 0.8),
                               border: Border.all(color: Colors.grey.shade400),
                               borderRadius: BorderRadius.circular(8),
                             ),
@@ -210,9 +211,9 @@ class _HomeScreenState extends State<HomeScreen> {
                         const SizedBox(height: 20),
                         if (_isLoading)
                           Image.asset(
-                            'assets/loading.gif',
-                            width: 300,
-                            height: 300,
+                            'assets/loadingNew.gif',
+                            width: 100,
+                            height: 100,
                           ),
                         if (_error.isNotEmpty)
                           Text(
@@ -224,35 +225,82 @@ class _HomeScreenState extends State<HomeScreen> {
                             ),
                           ),
                         if (_country != null) ...[
-                          if (_country!.flagUrl.isNotEmpty)
-                            Image.network(_country!.flagUrl, height: 150),
-                          const SizedBox(height: 10),
-                          Text(
-                            'Name: ${_country!.name}',
-                            style: const TextStyle(
-                              fontSize: 22,
-                              color: Colors.white,
+                          Container(
+                            padding: const EdgeInsets.all(16),
+                            margin: const EdgeInsets.symmetric(vertical: 10),
+                            decoration: BoxDecoration(
+                              color: Color.fromRGBO(255, 255, 255, 0.8),
+                              borderRadius: BorderRadius.circular(20),
+                              boxShadow: [
+                                BoxShadow(
+                                  color: Colors.black26,
+                                  blurRadius: 10,
+                                  offset: Offset(0, 4),
+                                ),
+                              ],
                             ),
-                          ),
-                          Text(
-                            'Capital: ${_country!.capital}',
-                            style: const TextStyle(
-                              fontSize: 22,
-                              color: Colors.white,
-                            ),
-                          ),
-                          Text(
-                            'Continent: ${_country!.region}',
-                            style: const TextStyle(
-                              fontSize: 22,
-                              color: Colors.white,
-                            ),
-                          ),
-                          Text(
-                            'Population: ${_country!.population}',
-                            style: const TextStyle(
-                              fontSize: 22,
-                              color: Colors.white,
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                if (_country!.flagUrl.isNotEmpty)
+                                  SizedBox(
+                                    height: 150,
+                                    child: Image.network(
+                                      _country!.flagUrl,
+                                      fit: BoxFit.contain,
+                                      loadingBuilder:
+                                          (
+                                            BuildContext context,
+                                            Widget child,
+                                            ImageChunkEvent? loadingProgress,
+                                          ) {
+                                            if (loadingProgress == null)
+                                              return child; // fully loaded
+                                            // Show a centered loading GIF while loading
+                                            return Center(
+                                              child: SizedBox(
+                                                width: 60,
+                                                height: 60,
+                                                child: Image.asset(
+                                                  'assets/loadingNew.gif',
+                                                ),
+                                              ),
+                                            );
+                                          },
+                                    ),
+                                  ),
+
+                                const SizedBox(height: 10),
+                                Text(
+                                  'Name: ${_country!.name}',
+                                  style: const TextStyle(
+                                    fontSize: 22,
+                                    color: Colors.black87,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                                Text(
+                                  'Capital: ${_country!.capital}',
+                                  style: const TextStyle(
+                                    fontSize: 22,
+                                    color: Colors.black87,
+                                  ),
+                                ),
+                                Text(
+                                  'Continent: ${_country!.region}',
+                                  style: const TextStyle(
+                                    fontSize: 22,
+                                    color: Colors.black87,
+                                  ),
+                                ),
+                                Text(
+                                  'Population: ${_country!.population}',
+                                  style: const TextStyle(
+                                    fontSize: 22,
+                                    color: Colors.black87,
+                                  ),
+                                ),
+                              ],
                             ),
                           ),
                         ],
