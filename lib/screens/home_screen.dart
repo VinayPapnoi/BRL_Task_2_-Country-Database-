@@ -113,20 +113,28 @@ class _HomeScreenState extends State<HomeScreen> {
                           controller: _controller,
                           style: const TextStyle(
                             fontSize: 25,
-                            color: Colors.white,
+                            color: Colors.black87,
+                            fontWeight: FontWeight.bold,
                           ),
                           onChanged: _getSuggestions,
                           decoration: InputDecoration(
                             labelText: 'Enter country name',
                             labelStyle: const TextStyle(
                               fontSize: 20,
-                              color: Colors.white,
+                              color: Color.fromARGB(255, 0, 0, 0),
                             ),
-                            border: OutlineInputBorder(),
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(40),
+                              borderSide: BorderSide(color: Colors.white),
+                            ),
+                            filled: true,
+                            fillColor: Color.fromRGBO(255, 255, 255, 0.7),
                             enabledBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(20),
                               borderSide: BorderSide(color: Colors.white),
                             ),
                             focusedBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(20),
                               borderSide: BorderSide(color: Colors.blue),
                             ),
                           ),
