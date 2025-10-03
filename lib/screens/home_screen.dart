@@ -205,7 +205,6 @@ class _HomeScreenState extends State<HomeScreen> {
             ElevatedButton(
               onPressed: () async {
                 await FirebaseAuth.instance.signOut();
-                Navigator.of(context).pushReplacementNamed('/login');
               },
               style: ElevatedButton.styleFrom(
                 padding: const EdgeInsets.symmetric(

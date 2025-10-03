@@ -56,10 +56,10 @@ class AuthWrapper extends StatelessWidget {
 
     if (firebaseUser != null) {
       if (firebaseUser.emailVerified) {
-        // Only verified users can enter HomeScreen
+        
         return const HomeScreen();
       } else {
-        // Show a screen telling user to verify their email
+        
         return const VerifyEmailScreen();
       }
     } else {
