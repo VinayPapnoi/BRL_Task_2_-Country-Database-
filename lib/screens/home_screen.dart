@@ -79,12 +79,11 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        automaticallyImplyLeading: false, 
+        automaticallyImplyLeading: false,
         leading: IconButton(
-          icon: const Icon(Icons.logout), 
+          icon: const Icon(Icons.logout),
           onPressed: () async {
             await context.read<FirebaseAuthMethods>().signOut(context);
-
             if (context.mounted) {
               Navigator.pushReplacement(
                 context,
@@ -95,135 +94,168 @@ class _HomeScreenState extends State<HomeScreen> {
         ),
         title: const Text('Countries Database', style: TextStyle(fontSize: 25)),
       ),
+      body: Stack(
+        children: [
+          SizedBox.expand(
+            child: Image.asset('assets/homeScreenBack.jpg', fit: BoxFit.cover),
+          ),
 
-      body: Padding(
-        padding: const EdgeInsets.all(16),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Expanded(
-              child: SingleChildScrollView(
-                child: Column(
-                  children: [
-                    TextField(
-                      controller: _controller,
-                      style: const TextStyle(fontSize: 25),
-                      onChanged: _getSuggestions,
-                      decoration: const InputDecoration(
-                        labelText: 'Enter country name',
-                        labelStyle: TextStyle(fontSize: 20),
-                        border: OutlineInputBorder(),
-                      ),
-                    ),
-                    if (_suggestions.isNotEmpty)
-                      Container(
-                        margin: const EdgeInsets.all(5),
-                        padding: const EdgeInsets.all(5),
-                        decoration: BoxDecoration(
-                          color: Colors.white,
-                          border: Border.all(color: Colors.grey.shade400),
-                          borderRadius: BorderRadius.circular(8),
+          Padding(
+            padding: const EdgeInsets.all(16),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Expanded(
+                  child: SingleChildScrollView(
+                    child: Column(
+                      children: [
+                        TextField(
+                          controller: _controller,
+                          style: const TextStyle(
+                            fontSize: 25,
+                            color: Colors.white,
+                          ),
+                          onChanged: _getSuggestions,
+                          decoration: InputDecoration(
+                            labelText: 'Enter country name',
+                            labelStyle: const TextStyle(
+                              fontSize: 20,
+                              color: Colors.white,
+                            ),
+                            border: OutlineInputBorder(),
+                            enabledBorder: OutlineInputBorder(
+                              borderSide: BorderSide(color: Colors.white),
+                            ),
+                            focusedBorder: OutlineInputBorder(
+                              borderSide: BorderSide(color: Colors.blue),
+                            ),
+                          ),
                         ),
-                        child: SizedBox(
-                          height: 200,
-                          child: ListView(
-                            shrinkWrap: true,
-                            children: _suggestions.map((country) {
-                              return Material(
-                                color: Colors.transparent,
-                                child: InkWell(
-                                  borderRadius: BorderRadius.circular(8),
-                                  onTap: () {
-                                    _controller.text = country.name;
-                                    _searchCountry();
-                                  },
-                                  child: Padding(
-                                    padding: const EdgeInsets.all(8.0),
-                                    child: Text(
-                                      country.name,
-                                      style: const TextStyle(fontSize: 18),
+                        if (_suggestions.isNotEmpty)
+                          Container(
+                            margin: const EdgeInsets.all(5),
+                            padding: const EdgeInsets.all(5),
+                            decoration: BoxDecoration(
+                              color: Colors.white.withOpacity(0.8),
+                              border: Border.all(color: Colors.grey.shade400),
+                              borderRadius: BorderRadius.circular(8),
+                            ),
+                            child: SizedBox(
+                              height: 200,
+                              child: ListView(
+                                shrinkWrap: true,
+                                children: _suggestions.map((country) {
+                                  return Material(
+                                    color: Colors.transparent,
+                                    child: InkWell(
+                                      borderRadius: BorderRadius.circular(8),
+                                      onTap: () {
+                                        _controller.text = country.name;
+                                        _searchCountry();
+                                      },
+                                      child: Padding(
+                                        padding: const EdgeInsets.all(8.0),
+                                        child: Text(
+                                          country.name,
+                                          style: const TextStyle(
+                                            fontSize: 18,
+                                            color: Colors.black,
+                                          ),
+                                        ),
+                                      ),
                                     ),
-                                  ),
-                                ),
-                              );
-                            }).toList(),
+                                  );
+                                }).toList(),
+                              ),
+                            ),
                           ),
-                        ),
-                      ),
-                    const SizedBox(height: 10),
-                    AnimatedContainer(
-                      duration: const Duration(milliseconds: 300),
-                      width: _pressed ? 220 : 180,
-                      height: 55,
-                      child: ElevatedButton(
-                        onPressed: () {
-                          setState(() {
-                            _pressed = true;
-                          });
-                          Future.delayed(const Duration(milliseconds: 300), () {
-                            if (mounted) {
+                        const SizedBox(height: 10),
+                        AnimatedContainer(
+                          duration: const Duration(milliseconds: 300),
+                          width: _pressed ? 220 : 180,
+                          height: 55,
+                          child: ElevatedButton(
+                            onPressed: () {
                               setState(() {
-                                _pressed = false;
+                                _pressed = true;
                               });
-                            }
-                          });
-                          _searchCountry();
-                        },
-                        style: ElevatedButton.styleFrom(
-                          padding: const EdgeInsets.symmetric(
-                            horizontal: 40,
-                            vertical: 10,
+                              Future.delayed(
+                                const Duration(milliseconds: 300),
+                                () {
+                                  if (mounted) setState(() => _pressed = false);
+                                },
+                              );
+                              _searchCountry();
+                            },
+                            style: ElevatedButton.styleFrom(
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 40,
+                                vertical: 10,
+                              ),
+                            ),
+                            child: const Text(
+                              'Search',
+                              style: TextStyle(fontSize: 20),
+                            ),
                           ),
                         ),
-                        child: const Text(
-                          'Search',
-                          style: TextStyle(fontSize: 20),
-                        ),
-                      ),
+                        const SizedBox(height: 20),
+                        if (_isLoading)
+                          Image.asset(
+                            'assets/loading.gif',
+                            width: 300,
+                            height: 300,
+                          ),
+                        if (_error.isNotEmpty)
+                          Text(
+                            _error,
+                            style: const TextStyle(
+                              fontWeight: FontWeight.bold,
+                              color: Color.fromARGB(255, 255, 17, 0),
+                              fontSize: 40,
+                            ),
+                          ),
+                        if (_country != null) ...[
+                          if (_country!.flagUrl.isNotEmpty)
+                            Image.network(_country!.flagUrl, height: 150),
+                          const SizedBox(height: 10),
+                          Text(
+                            'Name: ${_country!.name}',
+                            style: const TextStyle(
+                              fontSize: 22,
+                              color: Colors.white,
+                            ),
+                          ),
+                          Text(
+                            'Capital: ${_country!.capital}',
+                            style: const TextStyle(
+                              fontSize: 22,
+                              color: Colors.white,
+                            ),
+                          ),
+                          Text(
+                            'Continent: ${_country!.region}',
+                            style: const TextStyle(
+                              fontSize: 22,
+                              color: Colors.white,
+                            ),
+                          ),
+                          Text(
+                            'Population: ${_country!.population}',
+                            style: const TextStyle(
+                              fontSize: 22,
+                              color: Colors.white,
+                            ),
+                          ),
+                        ],
+                      ],
                     ),
-                    const SizedBox(height: 20),
-                    if (_isLoading)
-                      Image.asset(
-                        'assets/loading.gif',
-                        width: 300,
-                        height: 300,
-                      ),
-                    if (_error.isNotEmpty)
-                      Text(
-                        _error,
-                        style: const TextStyle(
-                          fontWeight: FontWeight.bold,
-                          color: Color.fromARGB(255, 255, 17, 0),
-                          fontSize: 40,
-                        ),
-                      ),
-                    if (_country != null) ...[
-                      if (_country!.flagUrl.isNotEmpty)
-                        Image.network(_country!.flagUrl, height: 150),
-                      const SizedBox(height: 10),
-                      Text(
-                        'Name: ${_country!.name}',
-                        style: const TextStyle(fontSize: 22),
-                      ),
-                      Text(
-                        'Capital: ${_country!.capital}',
-                        style: const TextStyle(fontSize: 22),
-                      ),
-                      Text(
-                        'Continent: ${_country!.region}',
-                        style: const TextStyle(fontSize: 22),
-                      ),
-                      Text(
-                        'Population: ${_country!.population}',
-                        style: const TextStyle(fontSize: 22),
-                      ),
-                    ],
-                  ],
+                  ),
                 ),
-              ),
+              ],
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }
