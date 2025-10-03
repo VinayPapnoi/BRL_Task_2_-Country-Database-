@@ -1,7 +1,10 @@
+import 'package:brl_task_2/screens/login_screen.dart';
+import 'package:brl_task_2/services/firebase_auth_methods.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:brl_task_2/models/country_model.dart';
 import 'package:brl_task_2/services/api_service.dart';
+import 'package:provider/provider.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -65,17 +68,38 @@ class _HomeScreenState extends State<HomeScreen> {
     });
   }
 
+  Future<void> _logout() async {
+    await FirebaseAuth.instance.signOut();
+    if (mounted) {
+      Navigator.of(context).pushReplacementNamed('/login');
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        automaticallyImplyLeading: false, 
+        leading: IconButton(
+          icon: const Icon(Icons.logout), 
+          onPressed: () async {
+            await context.read<FirebaseAuthMethods>().signOut(context);
+
+            if (context.mounted) {
+              Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(builder: (context) => const LoginScreen()),
+              );
+            }
+          },
+        ),
         title: const Text('Countries Database', style: TextStyle(fontSize: 25)),
       ),
+
       body: Padding(
         padding: const EdgeInsets.all(16),
         child: Column(
-          mainAxisAlignment: MainAxisAlignment
-              .spaceBetween, // space between top content and bottom
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Expanded(
               child: SingleChildScrollView(
@@ -106,12 +130,9 @@ class _HomeScreenState extends State<HomeScreen> {
                             shrinkWrap: true,
                             children: _suggestions.map((country) {
                               return Material(
-                                color:
-                                    Colors.transparent, // keeps background same
+                                color: Colors.transparent,
                                 child: InkWell(
-                                  borderRadius: BorderRadius.circular(
-                                    8,
-                                  ), // optional for rounded ripple
+                                  borderRadius: BorderRadius.circular(8),
                                   onTap: () {
                                     _controller.text = country.name;
                                     _searchCountry();
@@ -198,27 +219,6 @@ class _HomeScreenState extends State<HomeScreen> {
                       ),
                     ],
                   ],
-                ),
-              ),
-            ),
-
-            ElevatedButton(
-              onPressed: () async {
-                await FirebaseAuth.instance.signOut();
-              },
-              style: ElevatedButton.styleFrom(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 40,
-                  vertical: 10,
-                ),
-                backgroundColor: Colors.red,
-              ),
-              child: const Text(
-                'Logout',
-                style: TextStyle(
-                  fontSize: 20,
-                  color: Colors.white,
-                  fontWeight: FontWeight.bold,
                 ),
               ),
             ),
