@@ -41,7 +41,8 @@ class _EmailPasswordLoginState extends State<EmailPasswordLogin> {
     });
 
     final user = context.read<FirebaseAuthMethods>().user;
-    if (user.emailVerified) {
+
+    if (user != null && user.emailVerified) {
       Navigator.of(context).pushReplacement(
         MaterialPageRoute(builder: (context) => const HomeScreen()),
       );

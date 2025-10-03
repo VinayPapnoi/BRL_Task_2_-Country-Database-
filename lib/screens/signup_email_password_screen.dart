@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:brl_task_2/services/firebase_auth_methods.dart';
 import 'package:brl_task_2/widgets/custom_textfield.dart';
+import 'package:brl_task_2/screens/VerifyEmailScreen.dart';
 
 class EmailPasswordSignup extends StatefulWidget {
   static String routeName = '/signup-email-password';
@@ -56,6 +57,12 @@ class _EmailPasswordSignupState extends State<EmailPasswordSignup> {
       email: emailController.text.trim(),
       password: password,
       context: context,
+    );
+
+    // Navigate to VerifyEmailScreen
+    Navigator.pushReplacement(
+      context,
+      MaterialPageRoute(builder: (_) => const VerifyEmailScreen()),
     );
 
     setState(() {

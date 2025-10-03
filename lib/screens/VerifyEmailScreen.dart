@@ -1,8 +1,29 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
-class VerifyEmailScreen extends StatelessWidget {
+class VerifyEmailScreen extends StatefulWidget {
   const VerifyEmailScreen({super.key});
+
+  @override
+  State<VerifyEmailScreen> createState() => _VerifyEmailScreenState();
+}
+
+class _VerifyEmailScreenState extends State<VerifyEmailScreen> {
+  bool _isVerified = false;
+
+  Future<void> checkEmailVerified() async {
+    final user = FirebaseAuth.instance.currentUser;
+    if (user == null) return;
+
+    await user.reload();
+    if (user.emailVerified) {
+      Navigator.pushReplacementNamed(context, '/home');
+    } else {
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(const SnackBar(content: Text("Email not verified yet!")));
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -20,16 +41,7 @@ class VerifyEmailScreen extends StatelessWidget {
             ),
             const SizedBox(height: 20),
             ElevatedButton(
-              onPressed: () async {
-                await FirebaseAuth.instance.currentUser!.reload();
-                if (FirebaseAuth.instance.currentUser!.emailVerified) {
-                  (context as Element).reassemble();
-                } else {
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(content: Text("Email not verified yet!")),
-                  );
-                }
-              },
+              onPressed: checkEmailVerified,
               style: ElevatedButton.styleFrom(minimumSize: const Size(200, 50)),
               child: const Text(
                 "I have verified",
@@ -40,6 +52,7 @@ class VerifyEmailScreen extends StatelessWidget {
             ElevatedButton(
               onPressed: () async {
                 await FirebaseAuth.instance.signOut();
+                Navigator.pushReplacementNamed(context, '/login');
               },
               style: ElevatedButton.styleFrom(minimumSize: const Size(200, 50)),
               child: const Text("Logout", style: TextStyle(fontSize: 20)),

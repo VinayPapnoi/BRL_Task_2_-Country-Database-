@@ -8,7 +8,7 @@ class FirebaseAuthMethods {
   final FirebaseAuth _auth;
   FirebaseAuthMethods(this._auth);
 
-  User get user => _auth.currentUser!;
+  User? get user => _auth.currentUser;
   Stream<User?> get authState => _auth.authStateChanges();
 
   Future<void> signUpWithEmail({

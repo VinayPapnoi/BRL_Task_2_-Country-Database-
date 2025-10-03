@@ -206,9 +206,9 @@ class _HomeScreenState extends State<HomeScreen> {
                         const SizedBox(height: 20),
                         if (_isLoading)
                           Image.asset(
-                            'assets/loadingNew.gif',
-                            width: 100,
-                            height: 100,
+                            'assets/loadingear.gif',
+                            width: 300,
+                            height: 300,
                           ),
                         if (_error.isNotEmpty)
                           Text(

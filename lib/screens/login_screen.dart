@@ -4,6 +4,7 @@ import 'package:brl_task_2/services/firebase_auth_methods.dart';
 import 'package:brl_task_2/widgets/custom_button.dart';
 import 'package:brl_task_2/screens/signup_email_password_screen.dart';
 import 'package:brl_task_2/screens/login_email_password_screen.dart';
+import 'package:brl_task_2/screens/home_screen.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -19,12 +20,9 @@ class _LoginScreenState extends State<LoginScreen> {
       body: Stack(
         children: [
           SizedBox.expand(
-            child: Image.asset(
-              'assets/login.png', 
-              fit: BoxFit.cover,
-            ),
+            child: Image.asset('assets/login.png', fit: BoxFit.cover),
           ),
-         
+
           SafeArea(
             child: Padding(
               padding: const EdgeInsets.all(16.0),
@@ -32,13 +30,24 @@ class _LoginScreenState extends State<LoginScreen> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
-                  const Text(
-                    "Welcome",
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                      fontSize: 28,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.white, 
+                  Container(
+                    padding: const EdgeInsets.symmetric(
+                      vertical: 20,
+                      horizontal: 30,
+                    ),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(
+                        20,
+                      ), 
+                    ),
+                    child: const Text(
+                      "Welcome",
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                        fontSize: 60,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.black,
+                      ),
                     ),
                   ),
                   const SizedBox(height: 30),
@@ -72,6 +81,21 @@ class _LoginScreenState extends State<LoginScreen> {
                       );
                     },
                     text: 'Google Sign In',
+                  ),
+                  const SizedBox(height: 15),
+
+                  // BAAD ME HATANA HAI IS BUTTON KO
+                  // VVIP
+                  CustomButton(
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => const HomeScreen(),
+                        ),
+                      );
+                    },
+                    text: 'Go to Home (Test)',
                   ),
                 ],
               ),

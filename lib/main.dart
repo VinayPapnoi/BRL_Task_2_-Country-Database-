@@ -38,6 +38,8 @@ class MyApp extends StatelessWidget {
         theme: ThemeData(primarySwatch: Colors.blue),
         home: const AuthWrapper(),
         routes: {
+          '/home': (context) => const HomeScreen(),
+          '/login': (context) => const LoginScreen(),
           EmailPasswordSignup.routeName: (context) =>
               const EmailPasswordSignup(),
           EmailPasswordLogin.routeName: (context) => EmailPasswordLogin(),
@@ -56,10 +58,8 @@ class AuthWrapper extends StatelessWidget {
 
     if (firebaseUser != null) {
       if (firebaseUser.emailVerified) {
-        
         return const HomeScreen();
       } else {
-        
         return const VerifyEmailScreen();
       }
     } else {
