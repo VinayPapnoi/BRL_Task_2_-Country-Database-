@@ -36,9 +36,15 @@ class _LoginScreenState extends State<LoginScreen> {
                       horizontal: 30,
                     ),
                     decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(
-                        20,
-                      ), 
+                      color: Color.fromRGBO(255, 255, 255, 0.7),
+                      borderRadius: BorderRadius.circular(20),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.black26,
+                          blurRadius: 10,
+                          offset: Offset(0, 4),
+                        ),
+                      ],
                     ),
                     child: const Text(
                       "Welcome",
@@ -50,6 +56,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       ),
                     ),
                   ),
+
                   const SizedBox(height: 30),
 
                   CustomButton(

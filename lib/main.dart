@@ -14,6 +14,9 @@ import 'screens/VerifyEmailScreen.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+
+  await FirebaseAuth.instance.signOut();
+
   runApp(const MyApp());
 }
 
